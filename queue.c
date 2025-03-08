@@ -21,7 +21,7 @@ void q_free(struct list_head *head)
         return;
 
     element_t *node = NULL, *tmp = NULL;
-    list_for_each_entry_safe (node, tmp, head, list) {
+    list_for_each_entry_safe(node, tmp, head, list) {
         list_del(&node->list);
         q_release_element(node);
     }
@@ -89,7 +89,7 @@ int q_size(struct list_head *head)
 
     int size = 0;
     element_t *node;
-    list_for_each_entry (node, head, list) {
+    list_for_each_entry(node, head, list) {
         size++;
     }
     return size;
@@ -124,7 +124,7 @@ bool q_delete_dup(struct list_head *head)
     }
     struct list_head *cur, *next;
 
-    list_for_each_safe (cur, next, head) {
+    list_for_each_safe(cur, next, head) {
         element_t *cur_node = list_entry(cur, element_t, list);
         bool del_cur = false;
         /* Remove all nodes with same value as the cur_node*/
@@ -151,6 +151,24 @@ bool q_delete_dup(struct list_head *head)
 /* Swap every two adjacent nodes */
 void q_swap(struct list_head *head)
 {
+    if (!head || list_empty(head)) {
+        return;
+    }
+
+    for (struct list_head **node = &(head->next);
+         *node != head && (*node)->next != head; node = &(*node)->next->next) {
+        struct list_head *tmp = *node;
+        // second node
+        *node = (*node)->next;
+        // first node next point to  third node
+        tmp->next = (*node)->next;
+        // first node prev point to second node prev
+        tmp->prev = (*node);
+        // second node next point to first node
+        (*node)->next = tmp;
+        // second node prev point to first node prev
+        (*node)->prev = tmp->prev;
+    }
     // https://leetcode.com/problems/swap-nodes-in-pairs/
 }
 
