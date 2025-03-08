@@ -162,22 +162,68 @@ void q_swap(struct list_head *head)
         *node = (*node)->next;
         // first node next point to  third node
         tmp->next = (*node)->next;
-        // first node prev point to second node prev
-        tmp->prev = (*node);
         // second node next point to first node
         (*node)->next = tmp;
+
         // second node prev point to first node prev
         (*node)->prev = tmp->prev;
+        // first node prev point to second node prev
+        tmp->prev = (*node);
     }
     // https://leetcode.com/problems/swap-nodes-in-pairs/
 }
 
 /* Reverse elements in queue */
-void q_reverse(struct list_head *head) {}
+void q_reverse(struct list_head *head)
+{
+    if (!head || list_empty(head)) {
+        return;
+    }
 
+    struct list_head *cur = head;
+    do {
+        struct list_head *next = cur->next;
+        cur->next = cur->prev;
+        cur->prev = next;
+        cur = next;
+    } while (cur != head);
+}
 /* Reverse the nodes of the list k at a time */
 void q_reverseK(struct list_head *head, int k)
 {
+    if (!head || list_empty(head)) {
+        return;
+    }
+
+    struct list_head *cur = head->next, *start = NULL, *tail = head;
+    ;
+    int n = 0;
+    while (cur != head) {
+        n++;
+        if (n == 1) {
+            start = cur;
+        }
+        struct list_head *next = cur->next;
+        if (n == k) {
+            struct list_head *end = cur;
+            struct list_head *prev = end->next, *node = start;
+
+            while (node != end) {
+                struct list_head *tmp = node->next;
+                node->next = prev;
+                node->prev = tmp;
+                prev = node;
+                node = tmp;
+            }
+            node->next = prev;
+            node->prev = tail;
+            tail->next = node;
+            tail = start;
+            n = 0;
+        }
+        cur = next;
+    }
+
     // https://leetcode.com/problems/reverse-nodes-in-k-group/
 }
 
