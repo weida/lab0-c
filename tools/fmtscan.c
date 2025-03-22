@@ -56,7 +56,7 @@
 #define HASH_MASK (TABLE_SIZE - 1)
 
 #define MAX_WORD_NODES (27) /* a..z -> 0..25 and _/0..9 as 26 */
-#define WORD_NODES_HEAP_SIZE (250000)
+#define WORD_NODES_HEAP_SIZE (2500000)
 #define PRINTK_NODES_HEAP_SIZE (12000)
 #define SIZEOF_ARRAY(x) (sizeof(x) / sizeof(x[0]))
 
