@@ -175,8 +175,12 @@ void q_swap(struct list_head *head)
 
         // second node prev point to first node prev
         (*node)->prev = tmp->prev;
+        // first node prev update next pointer
+        (*node)->prev->next = (*node);
         // first node prev point to second node prev
         tmp->prev = (*node);
+        // second node next node update prev pointer
+        tmp->next->prev = tmp;
     }
     // https://leetcode.com/problems/swap-nodes-in-pairs/
 }
